@@ -13,6 +13,10 @@ export default class PlayerDied implements Rule {
             damage: parseFloat(args[4]),
             attackerPlayerController: args[5],
             weapon: args[6]
-        }
+          };
+      
+          logParser.eventStore[args[3]] = data;
+      
+          logParser.emit('PLAYER_DIED', data);
     }
 }

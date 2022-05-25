@@ -9,6 +9,9 @@ export default class RoundWinner implements Rule {
             chainID: args[2],
             winner: args[3],
             layer: args[4]
-        }
+          };
+      
+          if (logParser.eventStore.WON) logParser.eventStore.WON = { ...data, winner: null };
+          else logParser.eventStore.WON = data;
     }
 }

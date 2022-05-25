@@ -11,6 +11,10 @@ export default class PlayerDamaged implements Rule {
             damage: parseFloat(args[4]),
             attackerName: args[5],
             weapon: args[6]
-        }
+          };
+      
+          logParser.eventStore[args[3]] = data;
+      
+          logParser.emit('PLAYER_DAMAGED', data);
     }
 }

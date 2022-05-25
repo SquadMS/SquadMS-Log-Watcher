@@ -9,6 +9,8 @@ export default class AdminBroadcast implements Rule {
             chainID: args[2],
             message: args[3],
             from: args[4]
-        }
+        };
+      
+        logParser.emit('ADMIN_BROADCAST', data);
     }
 }

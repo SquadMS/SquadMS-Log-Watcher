@@ -9,6 +9,8 @@ export default class PlayerConnected implements Rule {
             chainID: args[2],
             playerSuffix: args[3],
             steamID: logParser.eventStore['steamid-connected']
-        }
+          };
+      
+          logParser.emit('PLAYER_CONNECTED', data);
     }
 }
