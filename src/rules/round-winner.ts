@@ -1,4 +1,4 @@
-export default class implements Rule {
+export default class RoundWinner implements Rule {
     regex = /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQGameMode::)?DetermineMatchWinner\(\): (.+) won on (.+)/
 
     onMatch(args: string[]): void

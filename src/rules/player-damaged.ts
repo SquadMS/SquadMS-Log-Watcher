@@ -1,4 +1,4 @@
-export default class implements Rule {
+export default class PlayerDamaged implements Rule {
     regex = /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: Player:(.+) ActualDamage=([0-9.]+) from (.+) caused by ([A-z_0-9]+)_C/
 
     onMatch(args: string[]): void

@@ -1,4 +1,4 @@
-export default class implements Rule {
+export default class AdminBroadcast implements Rule {
     regex = /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: ADMIN COMMAND: Message broadcasted <(.+)> from (.+)/
 
     onMatch(args: string[]): void

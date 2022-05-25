@@ -1,4 +1,4 @@
-export default class implements Rule {
+export default class NewGame implements Rule {
     regex = /^\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/([A-z]+)\/(?:Maps\/)?([A-z0-9-]+)\/(?:.+\/)?([A-z0-9-]+)(?:\.[A-z0-9-]+)/
 
     onMatch(args: string[]): void

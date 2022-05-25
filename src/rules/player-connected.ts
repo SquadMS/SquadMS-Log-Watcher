@@ -1,4 +1,4 @@
-export default class implements Rule {
+export default class PlayerConnected implements Rule {
     regex = /^\[([0-9.:-]+)]\[([ 0-9]*)]LogNet: Join succeeded: (.+)/
 
     onMatch(args: string[]): void

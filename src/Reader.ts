@@ -3,6 +3,8 @@ import path from 'path'
 import { queue, QueueObject } from 'async'
 import { Tail } from 'tail'
 import Logger from '@skyraptor/logger'
+import rules from './rules'
+import moment from 'moment';
 
 export default class Reader extends EventEmitter {
 
@@ -60,12 +62,10 @@ export default class Reader extends EventEmitter {
 
   /**
    * Get all rules defined in the /rules subdirectory as instanced objectes.
-   * 
-   * Attention: Will cache all rules so restart after modification is required
    */
   private getRules(): Rule[]
   {
-    return [];
+    return rules;
   }
 
   /**
