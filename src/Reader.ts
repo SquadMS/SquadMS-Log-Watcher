@@ -1,10 +1,10 @@
-import EventEmitter from 'events';
-import path from 'path';
+import { EventEmitter } from 'events';
+import { resolve } from 'path';
 import {queue, QueueObject} from 'async';
 import {Tail} from 'tail';
 import Logger from '@skyraptor/logger';
 import rules from './rules';
-import moment from 'moment';
+import { utc } from 'moment';
 
 export default class Reader extends EventEmitter {
   /* Tail related */
@@ -25,7 +25,7 @@ export default class Reader extends EventEmitter {
     this.queue = queue(this.processLine);
 
     /* Initialize tail watch and register listener for new lines */
-    this.tail = new Tail(path.resolve(logFile), {
+    this.tail = new Tail(resolve(logFile), {
       useWatchFile: true,
     });
     this.tail.on('line', this.queue.push);
@@ -74,7 +74,7 @@ export default class Reader extends EventEmitter {
 
       Logger.verbose('LogParser', 3, `Matched on line: ${match[0]}`);
 
-      match[1] = moment.utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate();
+      match[1] = utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate();
       match[2] = parseInt(match[2]);
 
       rule.onMatch(match, this);

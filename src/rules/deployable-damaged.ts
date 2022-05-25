@@ -1,8 +1,11 @@
+import { Rule } from "../declarations/rule";
+import Reader from "../Reader";
+
 export default class DeployableDamaged implements Rule {
   regex =
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQDeployable::)?TakeDamage\(\): ([A-z0-9_]+)_C_[0-9]+: ([0-9.]+) damage attempt by causer ([A-z0-9_]+)_C_[0-9]+ instigator (.+) with damage type ([A-z0-9_]+)_C health remaining ([0-9.]+)/;
 
-  onMatch(args: string[]): void {
+  onMatch(reader: Reader, args: string[]): void {
     const data = {
       raw: args[0],
       time: args[1],
@@ -15,8 +18,8 @@ export default class DeployableDamaged implements Rule {
       healthRemaining: args[8],
     };
 
-    logParser.eventStore[args[3]] = data;
+    reader.eventStore[args[3]] = data;
 
-    logParser.emit('DEPLOYABLE_DAMAGED', data);
+    reader.emit('DEPLOYABLE_DAMAGED', data);
   }
 }

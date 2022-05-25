@@ -1,4 +1,6 @@
+import Reader from "../Reader";
+
 declare interface Rule {
   regex: RegExp;
-  onMatch(args: string[]): void;
+  onMatch(reader: Reader, args: string[]): void;
 }

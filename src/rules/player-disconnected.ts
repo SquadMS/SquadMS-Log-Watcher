@@ -1,8 +1,11 @@
+import { Rule } from "../declarations/rule";
+import Reader from "../Reader";
+
 export default class PlayerDisconnected implements Rule {
   regex =
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogEasyAntiCheatServer: \[[0-9:]+] \[[A-z]+] \[EAC Server] \[Info] \[UnregisterClient] Client: ([A-z0-9]+) PlayerGUID: ([0-9]{17})/;
 
-  onMatch(args: string[]): void {
+  onMatch(reader: Reader, args: string[]): void {
     const data = {
       raw: args[0],
       time: args[1],
@@ -10,6 +13,6 @@ export default class PlayerDisconnected implements Rule {
       steamID: args[4],
     };
 
-    logParser.emit('PLAYER_DISCONNECTED', data);
+    reader.emit('PLAYER_DISCONNECTED', data);
   }
 }

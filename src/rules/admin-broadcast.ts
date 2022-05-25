@@ -1,8 +1,11 @@
+import { Rule } from "../declarations/rule";
+import Reader from "../Reader";
+
 export default class AdminBroadcast implements Rule {
   regex =
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: ADMIN COMMAND: Message broadcasted <(.+)> from (.+)/;
 
-  onMatch(args: string[]): void {
+  onMatch(reader: Reader, args: string[]): void {
     const data = {
       raw: args[0],
       time: args[1],
@@ -11,6 +14,6 @@ export default class AdminBroadcast implements Rule {
       from: args[4],
     };
 
-    logParser.emit('ADMIN_BROADCAST', data);
+    reader.emit('ADMIN_BROADCAST', data);
   }
 }

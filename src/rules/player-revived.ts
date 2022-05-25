@@ -1,9 +1,12 @@
+import { Rule } from "../declarations/rule";
+import Reader from "../Reader";
+
 export default class PlayerRevived implements Rule {
   regex = /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: (.+) has revived (.+)\./;
 
-  onMatch(args: string[]): void {
+  onMatch(reader: Reader, args: string[]): void {
     const data = {
-      ...logParser.eventStore[args[3]],
+      ...reader.eventStore[args[3]],
       raw: args[0],
       time: args[1],
       chainID: args[2],
@@ -11,6 +14,6 @@ export default class PlayerRevived implements Rule {
       victimName: args[4],
     };
 
-    logParser.emit('PLAYER_REVIVED', data);
+    reader.emit('PLAYER_REVIVED', data);
   }
 }

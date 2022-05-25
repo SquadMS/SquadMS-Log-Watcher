@@ -1,8 +1,11 @@
+import { Rule } from "../declarations/rule";
+import Reader from "../Reader";
+
 export default class SquadCreated implements Rule {
   regex =
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquad: (.+) \(Steam ID: ([0-9]{17})\) has created Squad (\d+) \(Squad Name: (.+)\) on (.+)/;
 
-  onMatch(args: string[]): void {
+  onMatch(reader: Reader, args: string[]): void {
     const data = {
       raw: args[0],
       time: args[1],
@@ -14,6 +17,6 @@ export default class SquadCreated implements Rule {
       teamName: args[7],
     };
 
-    logParser.emit('SQUAD_CREATED', data);
+    reader.emit('SQUAD_CREATED', data);
   }
 }

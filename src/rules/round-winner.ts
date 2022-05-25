@@ -1,8 +1,11 @@
+import { Rule } from "../declarations/rule";
+import Reader from "../Reader";
+
 export default class RoundWinner implements Rule {
   regex =
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQGameMode::)?DetermineMatchWinner\(\): (.+) won on (.+)/;
 
-  onMatch(args: string[]): void {
+  onMatch(reader: Reader, args: string[]): void {
     const data = {
       raw: args[0],
       time: args[1],
@@ -11,8 +14,8 @@ export default class RoundWinner implements Rule {
       layer: args[4],
     };
 
-    if (logParser.eventStore.WON)
-      logParser.eventStore.WON = {...data, winner: null};
-    else logParser.eventStore.WON = data;
+    if (reader.eventStore.WON)
+    reader.eventStore.WON = {...data, winner: null};
+    else reader.eventStore.WON = data;
   }
 }
