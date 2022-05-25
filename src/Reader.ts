@@ -1,23 +1,22 @@
 import EventEmitter from 'events';
-import path from 'path'
-import { queue, QueueObject } from 'async'
-import { Tail } from 'tail'
-import Logger from '@skyraptor/logger'
-import rules from './rules'
+import path from 'path';
+import {queue, QueueObject} from 'async';
+import {Tail} from 'tail';
+import Logger from '@skyraptor/logger';
+import rules from './rules';
 import moment from 'moment';
 
 export default class Reader extends EventEmitter {
-
   /* Tail related */
-  queue: QueueObject<any>
-  tail: Tail
+  queue: QueueObject<any>;
+  tail: Tail;
 
   /* Statistics */
-  linesPerMinute: number = 0
-  matchingLinesPerMinute: number = 0
-  matchingLatency: number = 0
+  linesPerMinute = 0;
+  matchingLinesPerMinute = 0;
+  matchingLatency = 0;
 
-  logStatsInterval?: NodeJS.Timer
+  logStatsInterval?: NodeJS.Timer;
 
   constructor(logFile = 'SquadGame.log') {
     super();
@@ -27,17 +26,15 @@ export default class Reader extends EventEmitter {
 
     /* Initialize tail watch and register listener for new lines */
     this.tail = new Tail(path.resolve(logFile), {
-      useWatchFile: true
+      useWatchFile: true,
     });
     this.tail.on('line', this.queue.push);
   }
 
-  
   /**
    * Watches the log file using tail and starts the internal proccesses
    */
-  async watch(): Promise<void>
-  {
+  async watch(): Promise<void> {
     Logger.verbose('LogParser', 1, 'Starting to watch(tail) the log file...');
     await this.tail.watch();
     Logger.verbose('LogParser', 1, 'Watch successfully started up!');
@@ -48,8 +45,7 @@ export default class Reader extends EventEmitter {
   /**
    * Gracefully stops active watch of the log file and kills the proccesses
    */
-  async unwatch(): Promise<void>
-  {
+  async unwatch(): Promise<void> {
     Logger.verbose('LogParser', 1, 'Stopping active watch of log file...');
     await this.tail.unwatch();
     Logger.verbose('LogParser', 1, 'Watch successfully stopped!');
@@ -58,13 +54,11 @@ export default class Reader extends EventEmitter {
       clearInterval(this.logStatsInterval);
     }
   }
-  
 
   /**
    * Get all rules defined in the /rules subdirectory as instanced objectes.
    */
-  private getRules(): Rule[]
-  {
+  private getRules(): Rule[] {
     return rules;
   }
 
@@ -92,7 +86,7 @@ export default class Reader extends EventEmitter {
     }
 
     this.linesPerMinute++;
-  }
+  };
 
   /**
    * Callback method to write statistics to log
@@ -113,5 +107,5 @@ export default class Reader extends EventEmitter {
     this.linesPerMinute = 0;
     this.matchingLinesPerMinute = 0;
     this.matchingLatency = 0;
-  }
+  };
 }

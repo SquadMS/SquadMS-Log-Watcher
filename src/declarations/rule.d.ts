@@ -1,4 +1,4 @@
 declare interface Rule {
-    regex: RegExp;
-    onMatch(args: string[]): void;
+  regex: RegExp;
+  onMatch(args: string[]): void;
 }

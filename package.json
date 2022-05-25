@@ -4,7 +4,14 @@
   "description": "A small application to watch Squad server log and POST events to an external HTTP-API.",
   "scripts": {
     "build": "rimraf ./build && tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint"
   },
   "author": "Patrick Henninger",
   "license": "MIT",
@@ -14,14 +21,15 @@
     "@types/chalk": "^2.2.0",
     "@types/mocha": "^9.1.1",
     "@types/moment": "^2.13.0",
-    "@types/node": "^17.0.35",
+    "@types/node": "^14.11.2",
     "@types/tail": "^2.2.1",
     "chai": "^4.3.6",
+    "gts": "^3.1.0",
     "mocha": "^10.0.0",
     "mocha-sinon": "^2.1.2",
     "rimraf": "^3.0.2",
     "ts-node": "^10.8.0",
-    "typescript": "^4.6.4"
+    "typescript": "^4.0.3"
   },
   "dependencies": {
     "@skyraptor/logger": "^0.1.3",
