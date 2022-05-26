@@ -1,22 +1,23 @@
-import { Rule } from "../declarations/rule";
-import Reader from "../Reader";
+import Rule from '../declarations/Rule';
+import MatchedLine from '../declarations/MatchedLine';
+import Reader from '../Reader';
 
 export default class NewGame implements Rule {
   regex =
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogWorld: Bringing World \/([A-z]+)\/(?:Maps\/)?([A-z0-9-]+)\/(?:.+\/)?([A-z0-9-]+)(?:\.[A-z0-9-]+)/;
 
-  onMatch(reader: Reader, args: string[]): void {
+  onMatch(reader: Reader, match: MatchedLine): void {
     if (args[5] === 'TransitionMap') {
       return;
     }
     const data = {
       ...reader.eventStore.WON,
-      raw: args[0],
-      time: args[1],
-      chainID: args[2],
-      dlc: args[3],
-      mapClassname: args[4],
-      layerClassname: args[5],
+      raw: match.raw,
+      time: match.time,
+      chainID: match.chainID,
+      dlc: match.matches[0],
+      mapClassname: match.matches[1],
+      layerClassname: match.matches[2],
     };
 
     delete reader.eventStore.WON;

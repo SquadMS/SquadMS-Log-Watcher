@@ -1,14 +1,15 @@
 import { EventEmitter } from 'events';
 import { resolve } from 'path';
-import {queue, QueueObject} from 'async';
-import {Tail} from 'tail';
+import { queue, QueueObject } from 'async';
+import { Tail } from 'tail';
 import Logger from '@skyraptor/logger';
 import rules from './rules';
 import { utc } from 'moment';
+import Rule from './declarations/Rule';
 
 export default class Reader extends EventEmitter {
   /* Tail related */
-  queue: QueueObject<any>;
+  queue: QueueObject<string>;
   tail: Tail;
 
   /* Statistics */
@@ -70,19 +71,23 @@ export default class Reader extends EventEmitter {
 
     for (const rule of this.getRules()) {
       const match = line.match(rule.regex);
-      if (!match) continue;
+      if (match) {
+        const matchedLine = {
+          raw: match[0],
+          time: utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate(),
+          chainID: parseInt(match[2]),
+          matches: match.splice(0, 3),
+        };
 
-      Logger.verbose('LogParser', 3, `Matched on line: ${match[0]}`);
+        Logger.verbose('LogParser', 3, `Matched on line: ${matchedLine.raw}`);
 
-      match[1] = utc(match[1], 'YYYY.MM.DD-hh.mm.ss:SSS').toDate();
-      match[2] = parseInt(match[2]);
+        rule.onMatch(this, match);
 
-      rule.onMatch(match, this);
+        this.matchingLinesPerMinute++;
+        this.matchingLatency += Date.now() - matchedLine.time.getTime();
 
-      this.matchingLinesPerMinute++;
-      this.matchingLatency += Date.now() - match[1];
-
-      break;
+        break;
+      }
     }
 
     this.linesPerMinute++;

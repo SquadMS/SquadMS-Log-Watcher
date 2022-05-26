@@ -1,22 +1,23 @@
-import { Rule } from "../declarations/rule";
-import Reader from "../Reader";
+import Rule from '../declarations/Rule';
+import MatchedLine from '../declarations/MatchedLine';
+import Reader from '../Reader';
 
 export default class PlayerUnPossess implements Rule {
   regex =
     /^\[([0-9.:-]+)]\[([ 0-9]*)]LogSquadTrace: \[DedicatedServer](?:ASQPlayerController::)?OnUnPossess\(\): PC=(.+)/;
 
-  onMatch(reader: Reader, args: string[]): void {
+  onMatch(reader: Reader, match: MatchedLine): void {
     const data = {
-      raw: args[0],
-      time: args[1],
-      chainID: args[2],
-      playerSuffix: args[3],
+      raw: match.raw,
+      time: match.time,
+      chainID: match.chainID,
+      playerSuffix: match.matches[0],
       switchPossess:
-        args[3] in reader.eventStore &&
-        reader.eventStore[args[3]] === args[2],
+        match.matches[0] in reader.eventStore &&
+        reader.eventStore[match.matches[0]] === match.chainID,
     };
 
-    delete reader.eventStore[args[3]];
+    delete reader.eventStore[match.matches[0]];
 
     reader.emit('PLAYER_UNPOSSESS', data);
   }
